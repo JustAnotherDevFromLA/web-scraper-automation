@@ -1,0 +1,74 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: scraper_postgres
+    environment:
+      POSTGRES_USER: scraper
+      POSTGRES_PASSWORD: scraper_pass
+      POSTGRES_DB: scraper_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U scraper"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongodb:
+    image: mongo:7
+    container_name: scraper_mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: scraper
+      MONGO_INITDB_ROOT_PASSWORD: scraper_pass
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok'
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7
+    container_name: scraper_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: scraper_app
+    environment:
+      DATABASE_URL: postgresql://scraper:scraper_pass@postgres:5432/scraper_db
+      MONGODB_URL: mongodb://scraper:scraper_pass@mongodb:27017/scraper_db
+      REDIS_URL: redis://redis:6379/0
+      DEBUG: "false"
+      ENVIRONMENT: production
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+
+volumes:
+  postgres_data:
+  mongo_data:
+  redis_data:

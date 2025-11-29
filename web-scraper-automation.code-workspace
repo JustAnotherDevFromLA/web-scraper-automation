@@ -1,0 +1,141 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "Web Scraper Automation"
+    }
+  ],
+  "settings": {
+    "[python]": {
+      "editor.defaultFormatter": "ms-python.python",
+      "editor.formatOnSave": true,
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+      }
+    },
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": ["-v", "--tb=short", "-m", "not slow"],
+    "python.analysis.typeCheckingMode": "basic",
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Python: Run Script",
+        "type": "python",
+        "request": "launch",
+        "program": "${file}",
+        "console": "integratedTerminal",
+        "justMyCode": true
+      },
+      {
+        "name": "Python: Pytest (All)",
+        "type": "python",
+        "request": "launch",
+        "module": "pytest",
+        "args": ["-v", "--tb=short"],
+        "console": "integratedTerminal",
+        "justMyCode": false
+      },
+      {
+        "name": "Python: Pytest (Unit Only)",
+        "type": "python",
+        "request": "launch",
+        "module": "pytest",
+        "args": ["tests/unit", "-v", "--tb=short"],
+        "console": "integratedTerminal",
+        "justMyCode": false
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Test: Run All",
+        "type": "shell",
+        "command": "pytest",
+        "args": ["-v", "--tb=short"],
+        "group": {
+          "kind": "test",
+          "isDefault": true
+        },
+        "problemMatcher": ["$pytest"]
+      },
+      {
+        "label": "Test: Unit Tests",
+        "type": "shell",
+        "command": "pytest",
+        "args": ["tests/unit", "-v"],
+        "group": "test"
+      },
+      {
+        "label": "Test: With Coverage",
+        "type": "shell",
+        "command": "pytest",
+        "args": ["--cov=src", "--cov-report=html", "--cov-report=term"],
+        "group": "test"
+      },
+      {
+        "label": "Lint: Black",
+        "type": "shell",
+        "command": "black",
+        "args": ["src", "tests"],
+        "group": "build"
+      },
+      {
+        "label": "Lint: isort",
+        "type": "shell",
+        "command": "isort",
+        "args": ["src", "tests"],
+        "group": "build"
+      },
+      {
+        "label": "Lint: Pylint",
+        "type": "shell",
+        "command": "pylint",
+        "args": ["src"],
+        "group": "build"
+      },
+      {
+        "label": "Dev: Initialize DB",
+        "type": "shell",
+        "command": "python",
+        "args": [
+          "-c",
+          "from src.database import init_db; init_db(); print('DB initialized')"
+        ],
+        "group": "build"
+      },
+      {
+        "label": "Dev: Run Docker Compose",
+        "type": "shell",
+        "command": "docker-compose",
+        "args": ["up", "-d"],
+        "group": "build"
+      }
+    ]
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-python.python",
+      "ms-python.debugpy",
+      "ms-python.pylint",
+      "ms-python.vscode-pylance",
+      "ms-toolsai.jupyter",
+      "sonarsource.sonarlint-vscode",
+      "esbenp.prettier-vscode",
+      "eamodio.gitlens",
+      "donjayamanne.githistory",
+      "humao.rest-client",
+      "ms-azuretools.vscode-docker",
+      "ms-vscode-remote.remote-containers",
+      "gruntfuggly.todo-tree",
+      "usernamehw.errorlens"
+    ]
+  }
+}
