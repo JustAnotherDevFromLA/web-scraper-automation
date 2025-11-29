@@ -3,9 +3,10 @@ Unit tests for workflows module
 """
 
 import asyncio
+
 import pytest
 
-from src.workflows import Task, Workflow, WorkflowRun, JobStatus
+from src.workflows import JobStatus, Task, Workflow, WorkflowRun
 
 
 @pytest.mark.unit
