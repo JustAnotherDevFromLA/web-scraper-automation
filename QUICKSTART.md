@@ -3,6 +3,7 @@
 ## Project Overview
 
 **Web Scraper Automation** is a production-ready Python framework for:
+
 - 🕷️ Multi-method web scraping (BeautifulSoup, Selenium, Async)
 - ⚙️ Workflow orchestration and job scheduling
 - 📊 Data processing and storage (PostgreSQL, MongoDB, Redis)
@@ -76,7 +77,7 @@ async def main():
     workflow = Workflow("my_first_workflow")
     workflow.add_task(Task(name="fetch", func=fetch_example))
     workflow.add_task(Task(name="process", func=process_data))
-    
+
     run = await workflow.execute()
     print(run.to_dict())
 
@@ -267,11 +268,13 @@ MONITORING_LOG_LEVEL=DEBUG
 ## Help & Troubleshooting
 
 **Tests failing?**
+
 ```bash
 pytest -vvs --tb=long tests/unit/test_name.py
 ```
 
 **Import errors?**
+
 ```bash
 pip install -e ".[dev]"
 ```
@@ -280,6 +283,7 @@ pip install -e ".[dev]"
 Check `DATABASE_URL` in `.env` and ensure database is running.
 
 **Need more info?**
+
 - Read full docs in `README.md`
 - Check `CONTRIBUTING.md` for development guide
 - Review code examples in `tests/`
